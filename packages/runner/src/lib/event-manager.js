@@ -186,6 +186,20 @@ const eventManager = {
   },
 
   initialize ($autIframe, config) {
+
+    console.log('em - initialize', $autIframe)
+
+    // const $document = $(document);
+    // const $window = $(window);
+    // console.log($document, $document.readyState)
+    // if ($document.readyState === 'loading') {
+    //   $window.addEventListener('load', ()=> {
+    //     $autIframe.get()[0].contentDocument.body.addEventListener('click', (e)=>console.log('load', e))
+    //   });
+    // } else {
+    //   $autIframe.get()[0].contentDocument.body.addEventListener('click', (e)=>console.log('loaded', e))
+    // }
+
     Cypress.initialize($autIframe)
 
     // get the current runnable in case we reran mid-test due to a visit

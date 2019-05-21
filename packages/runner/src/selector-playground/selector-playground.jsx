@@ -162,6 +162,7 @@ class SelectorPlayground extends Component {
   }
 
   _onOutsideClick = () => {
+    console.log('!!_onOutsideClick')
     this._setShowingMethodPicker(false)
   }
 
@@ -224,10 +225,12 @@ class SelectorPlayground extends Component {
   }
 
   _updateSelector = (e) => {
+    console.log('_updateSelector')
     const { model } = this.props
 
-    model.setSelector(e.target.value)
-    model.setShowingHighlight(true)
+    // model.setSelector(e.target.value)
+    // model.setShowingHighlight(true)
+    model.setShowingHighlight(false)
   }
 }
 

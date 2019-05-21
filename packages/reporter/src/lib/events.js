@@ -15,6 +15,7 @@ export default {
     const { appState, runnablesStore, scroller, statsStore } = this
 
     runner.on('runnables:ready', action('runnables:ready', (rootRunnable = {}) => {
+      console.log('emitted - runnables:ready')
       runnablesStore.setRunnables(rootRunnable)
     }))
 

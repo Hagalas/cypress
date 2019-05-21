@@ -102,7 +102,8 @@ handleEvent = (options, bus, event, id, type, arg) ->
       .catch(sendErr)
 
     when "launch:browser"
-      openProject.launch(arg.browser, arg.spec, {
+      openProject.launch(arg.browser, {
+      # openProject.launch(arg.browser, arg.spec, {
         projectRoot: options.projectRoot
         onBrowserOpen: ->
           send({browserOpened: true})

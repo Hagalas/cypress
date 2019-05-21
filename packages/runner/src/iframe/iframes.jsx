@@ -92,6 +92,7 @@ export default class Iframes extends Component {
       ),
     })
     this.iframeModel.listen()
+    
     this._run(this.props.config)
   }
 
@@ -122,7 +123,11 @@ export default class Iframes extends Component {
       const specSrc = `/${this.props.config.namespace}/iframes/${specPath}`
 
       const $container = $(this.refs.container).empty()
-      const $autIframe = this.autIframe.create(this.props.config).appendTo($container)
+      const $autIframe = this.autIframe.create(this.props.config);
+      $autIframe.get()[0].onload = () => {
+        $autIframe.get()[0].contentDocument.addEventListener('click', (e)=> console.log(e))
+      }
+      $autIframe.appendTo($container)
 
       this.autIframe.showBlankContents()
 

@@ -53,11 +53,12 @@ class SelectorPlaygroundModel {
   }
 
   @action setSelector (selector) {
-    if (this.method === 'get') {
-      this.getSelector = selector
-    } else {
-      this.containsSelector = selector
-    }
+    console.log('setSelector', selector)
+    // if (this.method === 'get') {
+    //   this.getSelector = selector
+    // } else {
+    //   this.containsSelector = selector
+    // }
   }
 
   @action setNumElements (numElements) {

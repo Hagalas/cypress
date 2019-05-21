@@ -176,12 +176,14 @@ function getOrCreateSelectorHelperDom ($body) {
   })
 }
 
-function addOrUpdateSelectorPlaygroundHighlight ({ $el, $body, selector, showTooltip, onClick }) {
+function addOrUpdateSelectorPlaygroundHighlight ({ $el, $body, selector, showTooltip, onClick, onKeyPress, onKeyDown }) {
   getOrCreateSelectorHelperDom($body)
   .then(({ $container, shadowRoot, $reactContainer }) => {
     if (!$el) {
       selectorPlaygroundHighlight.unmount($reactContainer[0])
       $reactContainer.off('click')
+      $reactContainer.off('keypress')
+      $reactContainer.off('keydown')
       $container.remove()
 
       return
@@ -210,6 +212,14 @@ function addOrUpdateSelectorPlaygroundHighlight ({ $el, $body, selector, showToo
       $reactContainer
       .off('click')
       .on('click', onClick)
+
+      $reactContainer
+      .off('keypress')
+      .on('keypress', onKeyPress)
+
+      $reactContainer
+      .off('keydown')
+      .on('keydown', onKeyDown)
     }
 
     selectorPlaygroundHighlight.render($reactContainer[0], {

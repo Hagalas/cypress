@@ -565,7 +565,8 @@ module.exports = {
       errors.warning("VIDEO_POST_PROCESSING_FAILED", err.stack)
 
   launchBrowser: (options = {}) ->
-    { browser, spec, write, project, screenshots, projectRoot } = options
+    { browser, write, project, screenshots, projectRoot } = options
+    # { browser, spec, write, project, screenshots, projectRoot } = options
 
     browserOpts = switch browser.name
       when "electron"
@@ -583,7 +584,8 @@ module.exports = {
 
     browserOpts.projectRoot = projectRoot
 
-    openProject.launch(browser, spec, browserOpts)
+    openProject.launch(browser, browserOpts)
+    # openProject.launch(browser, spec, browserOpts)
 
   listenForProjectEnd: (project, exit) ->
     new Promise (resolve) ->
@@ -785,7 +787,8 @@ module.exports = {
     runEachSpec = (spec, index, length, estimated) =>
       displaySpecHeader(spec.name, index + 1, length, estimated)
 
-      @runSpec(spec, options, estimated)
+      # @runSpec(spec, options, estimated)
+      @runSpec(options, estimated)
       .get("results")
       .tap (results) ->
         debug("spec results %o", results)
@@ -815,7 +818,8 @@ module.exports = {
       writeOutput(outputPath, results)
       .return(results)
 
-  runSpec: (spec = {}, options = {}, estimated) ->
+  # runSpec: (spec = {}, options = {}, estimated) ->
+  runSpec: (options = {}, estimated) ->
     { project, browser, video, videosFolder } = options
 
     { isHeadless, isHeaded } = browser

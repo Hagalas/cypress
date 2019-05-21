@@ -114,7 +114,7 @@ class SpecsList extends Component {
 
     const { project } = this.props
 
-    return projectsApi.runSpec(project, spec, project.chosenBrowser)
+    return projectsApi.runSpec(project, project.chosenBrowser)
   }
 
   _selectSpecFolder (specFolderPath, e) {

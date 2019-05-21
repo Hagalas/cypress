@@ -57,11 +57,6 @@
     "check-terminal": "node scripts/check-terminal.js",
     "effective:circle:config": "circleci config process circle.yml | sed /^#/d"
   },
-  "lint-staged": {
-    "*.js": [
-      "precommit-lint"
-    ]
-  },
   "devDependencies": {
     "@cypress/bumpercar": "2.0.6",
     "@cypress/commit-message-install": "2.4.2",

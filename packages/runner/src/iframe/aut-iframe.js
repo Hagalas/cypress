@@ -20,6 +20,16 @@ export default class AutIframe {
       class: 'aut-iframe',
     })
 
+    // console.log('autframe - create', this.$iframe, $(document), $(document).readyState)
+
+    // if ($(document).readyState === 'loading') {
+    //   $(window).addEventListener('load', function(e){
+    //     this.$iframe.get()[0].contentDocument.body.addEventListener('click', (e)=>console.log(e))
+    //   });
+    // } else {
+    //   this.$iframe.get()[0].contentDocument.body.addEventListener('click', (e)=>console.log(e))
+    // }
+
     return this.$iframe
   }
 
@@ -217,6 +227,7 @@ export default class AutIframe {
     this._contents() && this._contents().find('.__cypress-highlight').remove()
   }
 
+  // !!
   toggleSelectorPlayground = (isEnabled) => {
     const $body = this._body()
 
@@ -277,9 +288,18 @@ export default class AutIframe {
       $body,
       showTooltip: true,
       onClick: () => {
-        selectorPlaygroundModel.setNumElements(1)
-        selectorPlaygroundModel.resetMethod()
-        selectorPlaygroundModel.setSelector(selector)
+        console.log('!!addOrUpdateSelectorPlaygroundHighlight - click', selector)
+        // selectorPlaygroundModel.setNumElements(1)
+        // selectorPlaygroundModel.resetMethod()
+        // eventManager.reporterBus.emit('runnables:ready', {});
+        // eventManager.emit('runnables:ready', {});
+        // selectorPlaygroundModel.setSelector(selector)
+      },
+      onKeyPress: () => {
+        console.log('!!addOrUpdateSelectorPlaygroundHighlight - keypress')
+      },
+      onKeyDown: () => {
+        console.log('!!addOrUpdateSelectorPlaygroundHighlight - keydown')
       },
     })
   }

@@ -63,14 +63,16 @@ const addProject = (path) => {
   .return(project)
 }
 
-const runSpec = (project, spec, browser) => {
-  specsStore.setChosenSpec(spec)
+// const runSpec = (project, spec, browser) => {
+  // specsStore.setChosenSpec(spec)
+const runSpec = (project, browser) => {
   project.setChosenBrowser(browser)
 
   const launchBrowser = () => {
     project.browserOpening()
 
-    ipc.launchBrowser({ browser, spec: spec.file }, (err, data = {}) => {
+    // ipc.launchBrowser({ browser, spec: spec.file }, (err, data = {}) => {
+    ipc.launchBrowser({ browser }, (err, data = {}) => {
       if (err) {
         return project.setError(err)
       }
@@ -82,7 +84,7 @@ const runSpec = (project, spec, browser) => {
       if (data.browserClosed) {
         project.browserClosed()
 
-        specsStore.setChosenSpec(null)
+        // specsStore.setChosenSpec(null)
 
         ipc.offLaunchBrowser()
       }
@@ -93,10 +95,11 @@ const runSpec = (project, spec, browser) => {
   .then(launchBrowser)
 }
 
-const closeBrowser = (project, spec) => {
-  if (!spec) {
-    specsStore.setChosenSpec(null)
-  }
+const closeBrowser = (project) => {
+// const closeBrowser = (project, spec) => {
+  // if (!spec) {
+  //   specsStore.setChosenSpec(null)
+  // }
 
   if (project) {
     project.browserClosed()
