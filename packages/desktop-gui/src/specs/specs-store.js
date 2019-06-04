@@ -10,6 +10,8 @@ const pathSeparatorRe = /[\\\/]/g
 
 export const allSpecsSpec = new Spec({
   name: 'All Specs',
+  absolute: '',
+  relative: '',
   absolute: '__all',
   relative: '__all',
   displayName: 'Run all specs',

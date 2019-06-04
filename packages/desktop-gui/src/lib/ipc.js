@@ -18,7 +18,7 @@ const ipc = {
 
 const register = (eventName, isPromiseApi = true) => {
   ipc[_.camelCase(eventName)] = (...args) => {
-    // console.log('ipc', eventName, 'called with', args) // NOTE: uncomment to debug ipc
+    console.log('ipc', eventName, 'called with', args) // NOTE: uncomment to debug ipc
     return ipcBus(eventName, ...args)
   }
   if (!isPromiseApi) {
@@ -28,6 +28,7 @@ const register = (eventName, isPromiseApi = true) => {
   }
 }
 
+register('resolve:my:url', false)
 register('add:project')
 register('clear:github:cookies')
 register('close:browser')
@@ -44,6 +45,7 @@ register('get:project:status')
 register('get:record:keys')
 register('get:specs', false)
 register('launch:browser', false)
+register('launch:browser:without:spec', false)
 register('log:in')
 register('log:out')
 register('on:focus:tests', false)

@@ -101,9 +101,18 @@ handleEvent = (options, bus, event, id, type, arg) ->
       .then(send)
       .catch(sendErr)
 
+    when "launch:browser:without:spec"
+      openProject.launchWithoutSpec(arg.browser, {
+        projectRoot: options.projectRoot
+        onBrowserOpen: ->
+          send({browserOpened: true})
+        onBrowserClose: ->
+          send({browserClosed: true})
+      })
+      .catch(sendErr)
+
     when "launch:browser"
-      openProject.launch(arg.browser, {
-      # openProject.launch(arg.browser, arg.spec, {
+      openProject.launch(arg.browser, arg.spec, {
         projectRoot: options.projectRoot
         onBrowserOpen: ->
           send({browserOpened: true})
@@ -183,6 +192,10 @@ handleEvent = (options, bus, event, id, type, arg) ->
       .then -> send(arg)
       .catch(sendErr)
 
+    when "resolve:my:url"
+      onOpenUrl = (url) ->
+        bus.emit("backend:request", "resolve:url", url, "foo")
+
     when "open:project"
       onSettingsChanged = ->
         bus.emit("config:changed")
@@ -209,6 +222,7 @@ handleEvent = (options, bus, event, id, type, arg) ->
           onFocusTests: onFocusTests
           onSpecChanged: onSpecChanged
           onSettingsChanged: onSettingsChanged
+          onOpenUrl: onOpenUrl
           onError: onError
           onWarning: onWarning
         })

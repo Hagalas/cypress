@@ -63,20 +63,48 @@ const addProject = (path) => {
   .return(project)
 }
 
-// const runSpec = (project, spec, browser) => {
-  // specsStore.setChosenSpec(spec)
-const runSpec = (project, browser) => {
+const runBrowserWithoutSpec = (project, browser) => {
+
+  project.setChosenBrowser(browser)
+
+  ipc.launchBrowserWithoutSpec({ browser }, (err, data = {}) => {
+    if (err) {
+      return project.setError(err)
+    }
+    
+    // console.log('resolveMyUrl');
+    // ipc.resolveMyUrl('https://o2.pl')
+    
+    if (data.browserOpened) {
+      project.browserOpened()
+    }
+
+    if (data.browserClosed) {
+      project.browserClosed()
+
+      specsStore.setChosenSpec(null)
+
+      ipc.offLaunchBrowser()
+    }
+  })
+}
+
+const runSpec = (project, spec, browser) => {
+  debugger;
+  specsStore.setChosenSpec(spec)
   project.setChosenBrowser(browser)
 
   const launchBrowser = () => {
     project.browserOpening()
 
-    // ipc.launchBrowser({ browser, spec: spec.file }, (err, data = {}) => {
-    ipc.launchBrowser({ browser }, (err, data = {}) => {
+    ipc.launchBrowser({ browser, spec: spec.file }, (err, data = {}) => {
       if (err) {
         return project.setError(err)
       }
-
+      
+      console.log('resolveMyUrl');
+      ipc.resolveMyUrl('https://o2.pl')
+      
       if (data.browserOpened) {
         project.browserOpened()
       }
@@ -84,7 +112,7 @@ const runSpec = (project, browser) => {
       if (data.browserClosed) {
         project.browserClosed()
 
-        // specsStore.setChosenSpec(null)
+        specsStore.setChosenSpec(null)
 
         ipc.offLaunchBrowser()
       }
@@ -95,11 +123,10 @@ const runSpec = (project, browser) => {
   .then(launchBrowser)
 }
 
-const closeBrowser = (project) => {
-// const closeBrowser = (project, spec) => {
-  // if (!spec) {
-  //   specsStore.setChosenSpec(null)
-  // }
+const closeBrowser = (project, spec) => {
+  if (!spec) {
+    specsStore.setChosenSpec(null)
+  }
 
   if (project) {
     project.browserClosed()
@@ -229,6 +256,7 @@ export default {
   removeProject,
   updateProject,
   runSpec,
+  runBrowserWithoutSpec,
   closeBrowser,
   getRecordKeys,
 }

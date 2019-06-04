@@ -286,6 +286,9 @@ class Project extends EE
   changeToUrl: (url) ->
     @server.changeToUrl(url)
 
+  setCurrentBrowser: (browser) ->
+    @browser = browser
+
   setCurrentSpecAndBrowser: (spec, browser) ->
     @spec = spec
     @browser = browser

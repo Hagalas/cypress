@@ -46,7 +46,11 @@ class SpecsList extends Component {
               <a className='clear-filter fa fa-times' onClick={this._clearFilter} />
             </Tooltip>
           </div>
-          <a onClick={this._selectSpec.bind(this, allSpecsSpec)} className={cs('all-tests btn btn-default', { active: specsStore.isChosen(allSpecsSpec) })}>
+          <a onClick={this._clickTestBtn.bind(this)} className={cs('all-tests btn btn-default', { active: specsStore.isChosen(allSpecsSpec) })}>
+            <i className={`fa fa-fw ${this._allSpecsIcon(specsStore.isChosen(allSpecsSpec))}`}></i>{' '}
+            TestBtn
+          </a>
+          <a onClick={this._selectSpec.bind(this)} className={cs('all-tests btn btn-default', { active: specsStore.isChosen(allSpecsSpec) })}>
             <i className={`fa fa-fw ${this._allSpecsIcon(specsStore.isChosen(allSpecsSpec))}`}></i>{' '}
             {allSpecsSpec.displayName}
           </a>
@@ -109,12 +113,22 @@ class SpecsList extends Component {
     }
   }
 
+  _clickTestBtn (e) {
+    e.preventDefault()
+
+    console.log('Clicked TestBtn')
+
+    const { project } = this.props
+
+    return projectsApi.runBrowserWithoutSpec(project, project.chosenBrowser)
+  }
+
   _selectSpec (spec, e) {
     e.preventDefault()
 
     const { project } = this.props
 
-    return projectsApi.runSpec(project, project.chosenBrowser)
+    return projectsApi.runSpec(project, spec, project.chosenBrowser)
   }
 
   _selectSpecFolder (specFolderPath, e) {
@@ -151,7 +165,7 @@ class SpecsList extends Component {
   _specContent (spec, nestingLevel) {
     return (
       <li key={spec.path} className={`file level-${nestingLevel}`}>
-        <a href='#' onClick={this._selectSpec.bind(this, spec)} className={cs({ active: specsStore.isChosen(spec) })}>
+        <a href='#' onClick={this._selectSpec.bind(this)} className={cs({ active: specsStore.isChosen(spec) })}>
           <div>
             <div className="file-name">
               <i className={`fa fa-fw ${this._specIcon(specsStore.isChosen(spec))}`}></i>

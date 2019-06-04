@@ -42,6 +42,69 @@ create = ->
 
     getProject: -> openProject
 
+    launchWithoutSpec: (browser, options = {}) ->
+      debug("resetting project state, preparing to launch browser without spec")
+
+      la(_.isPlainObject(browser), "expected browser object:", browser)
+
+      ## reset to reset server and socket state because
+      ## of potential domain changes, request buffers, etc
+      @reset()
+      .then ->
+        openProject.getConfig()
+        .then (cfg) ->
+          options.browsers          = cfg.browsers
+          options.proxyUrl          = cfg.proxyUrl
+          options.userAgent         = cfg.userAgent
+          options.proxyServer       = cfg.proxyUrl
+          options.socketIoRoute     = cfg.socketIoRoute
+          options.chromeWebSecurity = cfg.chromeWebSecurity
+
+          ## todo
+          options.url = "testUrl"
+
+          options.isTextTerminal = cfg.isTextTerminal
+
+          ## if we don't have the isHeaded property
+          ## then we're in interactive mode and we
+          ## can assume its a headed browser
+          ## TODO: we should clean this up
+          if not _.has(browser, "isHeaded")
+            browser.isHeaded = true
+            browser.isHeadless = false
+
+          ## set the current browser object on options
+          ## so we can pass it down
+          options.browser = browser
+
+          openProject.setCurrentBrowser(browser)
+
+          automation = openProject.getAutomation()
+
+          ## use automation middleware if its
+          ## been defined here
+          if am = options.automationMiddleware
+            automation.use(am)
+
+          automation.use({
+            onBeforeRequest: (message, data) ->
+              if message is "take:screenshot"
+                data
+          })
+
+          onBrowserClose = options.onBrowserClose
+          options.onBrowserClose = ->
+            if onBrowserClose
+              onBrowserClose()
+
+          do relaunchBrowser = ->
+            debug(
+              "launching browser: %o w/o spec",
+              browser
+            )
+
+            browsers.open(browser, options, automation)
+
     launch: (browser, spec, options = {}) ->
       debug("resetting project state, preparing to launch browser")
 
@@ -62,6 +125,7 @@ create = ->
           options.socketIoRoute     = cfg.socketIoRoute
           options.chromeWebSecurity = cfg.chromeWebSecurity
 
+          debug("launching browser with ", url)
           options.url = url
 
           options.isTextTerminal = cfg.isTextTerminal
